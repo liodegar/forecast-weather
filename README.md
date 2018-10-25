@@ -53,8 +53,8 @@ A version of JDK 8 or higher should be installed in order to run the application
 
    and using BASIC auth with the following credentials:
 
-   username=user
-   password=finleap@2018
+        username=user
+        password=finleap@2018
 
 
    After invoking these endpoint you will get something like this:
@@ -79,7 +79,7 @@ A version of JDK 8 or higher should be installed in order to run the application
 
     and using BASIC auth with the following credentials:
 
-       username=user
+       username=user   
        password=finleap@2018
 
 
