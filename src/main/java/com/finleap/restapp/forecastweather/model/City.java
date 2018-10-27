@@ -20,6 +20,8 @@ public class City implements Serializable {
 
     private String isoCountryCode;
 
+    private String sourceProviderKey;
+
     public City() {
     }
 
@@ -57,6 +59,14 @@ public class City implements Serializable {
         this.isoCountryCode = isoCountryCode;
     }
 
+    public String getSourceProviderKey() {
+        return sourceProviderKey;
+    }
+
+    public void setSourceProviderKey(String sourceProviderKey) {
+        this.sourceProviderKey = sourceProviderKey;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,7 +76,9 @@ public class City implements Serializable {
 
         if (id != null ? !id.equals(city.id) : city.id != null) return false;
         if (name != null ? !name.equals(city.name) : city.name != null) return false;
-        return !(isoCountryCode != null ? !isoCountryCode.equals(city.isoCountryCode) : city.isoCountryCode != null);
+        if (isoCountryCode != null ? !isoCountryCode.equals(city.isoCountryCode) : city.isoCountryCode != null)
+            return false;
+        return !(sourceProviderKey != null ? !sourceProviderKey.equals(city.sourceProviderKey) : city.sourceProviderKey != null);
 
     }
 
@@ -75,6 +87,7 @@ public class City implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (isoCountryCode != null ? isoCountryCode.hashCode() : 0);
+        result = 31 * result + (sourceProviderKey != null ? sourceProviderKey.hashCode() : 0);
         return result;
     }
 
@@ -84,6 +97,7 @@ public class City implements Serializable {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", isoCountryCode='").append(isoCountryCode).append('\'');
+        sb.append(", sourceProviderKey='").append(sourceProviderKey).append('\'');
         sb.append('}');
         return sb.toString();
     }

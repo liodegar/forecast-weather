@@ -10,8 +10,6 @@ import com.finleap.restapp.forecastweather.service.exception.BusinessException;
  */
 public interface ForecastWeatherService {
 
-
-
     /**
      * Gets the forecast weather metrics for the given city
      * @param city a City instance
@@ -19,4 +17,6 @@ public interface ForecastWeatherService {
      * @throws BusinessException if any exception is found, with a message containing contextual information of the error and the root exception
      */
     ForecastWeatherMetrics getForecastWeatherMetrics(City city) throws BusinessException;
+
+
 }

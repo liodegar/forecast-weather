@@ -1,11 +1,12 @@
 # Forecast Weather Microservice REST API (FWMRA)
 
-This API provides basic consolidated average info retrieved from openweathermap.org. The consolidated info has the following averages:
+This API provides basic consolidated average info retrieved from either openweathermap.org or mocky.io. The consolidated info has the following averages:
 
 1.	Average of daily (6h-18h) temperature, in Celsius, for the following 3 days
 2.	Average of nightly (18h-6h) temperature, in Celsius, for the following 3 days
 3.	Average of pressure for the following 3 days
 
+Note: If no provider parameter is provided, openweathermap.org will be used as default provider.
 
 ## Design considerations
 - The API supports two levels of security by using Spring Security and JSON Web Token.
@@ -25,6 +26,8 @@ located in ./logs directory.
 by using these parameters look for the cityId (Redis cached info), and then the provider API is invoked only by using the cityID.
 
 - No hard coded values. All the config properties are defined in the `application.properties` file
+
+- The providers are retrieved dynamically (at runtime) by using a factory that creates instances belonging to the SourceProvider hierarchy.
 
 
 ## Getting Started
@@ -71,15 +74,21 @@ A version of JDK 8 or higher should be installed in order to run the application
 
    `http://localhost:8080/weather/data`
 
-    Passing as parameter:
+    Passing as parameter, one of the following JSON payloads:
 
     {
-     "parameter":{"name":"Berlin", "isoCountryCode":"DE"}
+     "parameter":{"name":"Berlin", "isoCountryCode":"DE", "sourceProviderKey":"mocky.sourceProviderKey"}
+    }
+
+    or
+
+    {
+     "parameter":{"id":2950159, "sourceProviderKey":"mocky.sourceProviderKey"}
     }
 
     and using BASIC auth with the following credentials:
 
-       username=user   
+       username=user
        password=finleap@2018
 
 
@@ -87,6 +96,7 @@ A version of JDK 8 or higher should be installed in order to run the application
 
       `authorizationToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3ZWF0aGVyU3ViamVjdCIsImV4cCI6MTUzOTU2NzI0OX0.J3Xli1EV-T_cP-nQ_uJbkYGcYJdGINSvlmrwC6cSiHY`
 
+    Note: the supported sourceProviderKey are `mocky.sourceProviderKey` and `openweathermap.sourceProviderKey`. If this param is not provided, openweathermap.org will be used as default provider.
 
 ## More info
 

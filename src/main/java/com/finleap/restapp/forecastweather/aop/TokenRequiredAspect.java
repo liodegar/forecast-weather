@@ -7,8 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,8 +24,14 @@ import javax.xml.bind.DatatypeConverter;
 public class TokenRequiredAspect {
     private static final Logger logger = LoggerFactory.getLogger(TokenRequiredAspect.class);
 
-    @Autowired
-    private Environment env;
+    @Value("${security.tokenName}")
+    private String tokenName;
+
+    @Value("${security.secretKeys}")
+    private String secretKeys;
+
+    @Value("${security.subject}")
+    private String subject;
 
     @Before("@annotation(tokenRequired)")
     public void tokenRequiredWithAnnotation(TokenRequired tokenRequired) {
@@ -34,16 +39,16 @@ public class TokenRequiredAspect {
         ServletRequestAttributes reqAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = reqAttributes.getRequest();
         // checks for token in request header
-        String tokenInHeader = request.getHeader(env.getProperty("security.tokenName"));
+        String tokenInHeader = request.getHeader(tokenName);
         if (StringUtils.isEmpty(tokenInHeader)) {
             throw new AuthorizationException("The required token is missing");
         }
-        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(env.getProperty("security.secretKeys")))
+        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKeys))
                 .parseClaimsJws(tokenInHeader).getBody();
         if (claims == null || claims.getSubject() == null) {
             throw new AuthorizationException("Token Error: The Claim or the subject is null");
         }
-        if (!claims.getSubject().equalsIgnoreCase(env.getProperty("security.subject"))) {
+        if (!claims.getSubject().equalsIgnoreCase(subject)) {
             throw new AuthorizationException("Subject doesn't match in the token");
         }
         logger.info("After tokenRequiredWithAnnotation");

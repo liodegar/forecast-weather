@@ -6,7 +6,7 @@
 //
 
 
-package com.finleap.restapp.forecastweather.model;
+package com.finleap.restapp.forecastweather.service.dto;
 
 import javax.xml.bind.annotation.XmlRegistry;
 

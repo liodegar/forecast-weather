@@ -1,6 +1,7 @@
 package com.finleap.restapp.forecastweather;
 
 
+import io.swagger.annotations.Api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -63,8 +64,8 @@ public class ForecastWeatherApplication {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .apis(RequestHandlerSelectors.basePackage("com.finleap.restapp.forecastweather.controller")).paths(PathSelectors.ant("/weather/*"))
-
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
